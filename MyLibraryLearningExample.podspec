@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "MyLibraryLearningExample"
-  spec.version      = "0.1.1"
+  spec.version      = "0.1.2"
   spec.summary      = "A short description of MyLibraryLearningExample."
 
   # This description is used to generate tags and improve search results.
