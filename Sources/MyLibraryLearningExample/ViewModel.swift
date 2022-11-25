@@ -11,7 +11,7 @@ import Foundation
 public class ViewModel: ObservableObject {
     
     @Published var imageData = Data()
-    
+    //new version with workspace
     init(photoPath: String, did: String, sid: String) {
         getCredentials()
         getImage()
