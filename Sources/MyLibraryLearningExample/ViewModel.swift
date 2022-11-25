@@ -7,22 +7,35 @@
 
 import Foundation
 
+
 public class ViewModel: ObservableObject {
     
     @Published var imageData = Data()
     
     init(photoPath: String, did: String, sid: String) {
-        getImageNative(photoPath: photoPath, did: did, sid: sid)
+        getCredentials()
+        getImage()
     }
     
-    func getImageNative(photoPath: String, did: String, sid: String) {
-        Service.shared.downloadImageNative(photoPath: photoPath, did: did, sid: sid) { response in
-            DispatchQueue.main.async {
-                self.imageData = response
-            }
-           
+    func getCredentials() {
+        Service.shared.login(user: "ODSDEV", password: "FZcMKH23") { response in
+            print("login realizado: \(response.success)")
+            let did = response.data.did
+            let sid = response.data.sid
+            UserDefaults.standard.set(did, forKey: "did")
+            UserDefaults.standard.set(sid, forKey: "sid")
         }
     }
+    
+    func getImage() {
+        Service.shared.download(path: "/odsappdev" ,imageName: "test2.jpeg") { response , loading  in
+            self.imageData = response
+            //self.loading = false
+        }
+            
+    }
+    
+    
     
     
 }

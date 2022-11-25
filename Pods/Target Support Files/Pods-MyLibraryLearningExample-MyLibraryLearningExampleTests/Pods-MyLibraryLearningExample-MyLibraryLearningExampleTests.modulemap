@@ -1,0 +1,6 @@
+framework module Pods_MyLibraryLearningExample_MyLibraryLearningExampleTests {
+  umbrella header "Pods-MyLibraryLearningExample-MyLibraryLearningExampleTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
