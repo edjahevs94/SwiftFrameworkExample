@@ -2,35 +2,46 @@ import SwiftUI
 
 public struct MyLibraryLearningExample {
     
+    public init() {
+        
+    }
+    public func getCredentials(domainPath: String, user: String, password: String){
+        Service.shared.login(domainPath: domainPath, user: user, password: password) { response in
+            
+            let did = response.data.did
+            let sid = response.data.sid
+            UserDefaults.standard.set(did, forKey: "did")
+            UserDefaults.standard.set(sid, forKey: "sid")
+            
+        }
+    }
+    
     public struct SynologyImage: View {
         
         @ObservedObject var vm: ViewModel
-        
-  
-        @State var did: String
-        @State var sid: String
+        @State var placeHolder: UIImage
         @State var path: String
+        @State var domainPath: String
         
-        public init(did: String, sid: String, path: String, vm: ViewModel) {
-            self._did = State(initialValue: did)
-            self._sid = State(initialValue: sid)
+        public init(path: String, domainPath: String, placeHolder: UIImage) {
             self._path = State(initialValue: path)
-            self._vm = ObservedObject(wrappedValue: ViewModel(photoPath: path, did: did, sid: sid))
+            self._domainPath = State(initialValue: domainPath)
+            self._placeHolder = State(initialValue: placeHolder)
+            self._vm = ObservedObject(wrappedValue: ViewModel(photoPath: path, domainPath: domainPath))
         }
         
         public var body: some View {
-            HStack{
-                Image(uiImage: UIImage(data: vm.imageData) ?? UIImage(systemName: "eye")!)
-                    .resizable().frame(width: 100, height: 150)
-            }.padding()
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(.blue, lineWidth: 2))
+            if !(vm.loading) {
+                Image(uiImage: vm.imageC ?? placeHolder)
+                .resizable()
+            } else {
+                ProgressView()
+            }
         }
     }
 
     public struct MainTextField: View {
 
-       
-        
         @State var placeholder: String
        
         @Binding var text: String
